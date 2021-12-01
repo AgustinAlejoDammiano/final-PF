@@ -1,0 +1,83 @@
+name:                backend
+version:             0.1.0.0
+github:              "AgustinAlejoDammiano/final-PF/backend"
+license:             BSD3
+author:              "Agustin Dammiano"
+maintainer:          "adammiano@itba.edu.ar"
+copyright:           "2021 Agustin Dammiano"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+description:         Please see the README on GitHub at <https://github.com/AgustinAlejoDammiano/final-PF/backend#readme>
+
+dependencies:
+- classy-prelude
+- base
+
+default-extensions:
+- OverloadedStrings
+- QuasiQuotes
+- GeneralizedNewtypeDeriving
+- ConstraintKinds
+- FlexibleContexts
+- TemplateHaskell
+- FlexibleInstances
+- NoImplicitPrelude
+- ScopedTypeVariables
+
+library:
+  source-dirs: src
+  dependencies:
+  - scotty
+  - postgresql-simple
+  - postgresql-simple-migration
+  - regex-compat
+  - resource-pool
+  - data-has
+  - aeson
+  - wai
+  - mtl
+  - http-types
+  - warp-tls
+  - warp
+  - digestive-functors
+  - digestive-functors-aeson
+  - wai-cors
+  - template-haskell
+  # client
+  # wreq
+  # http-client
+
+  # cryptonite
+  # lens
+  # slug
+  # convertible
+  ghc-options:
+  - -Wall
+  - -Werror
+  - -Wincomplete-record-updates
+  - -Wincomplete-uni-patterns
+  - -Wredundant-constraints
+executables:
+  backend-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - backend
+
+tests:
+  backend-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - backend
