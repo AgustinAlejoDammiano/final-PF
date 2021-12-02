@@ -31,12 +31,12 @@ routes = do
 
 jurisdictionErrorHandler :: (ScottyError e, Monad m) => JurisdictionError -> ActionT e m ()
 jurisdictionErrorHandler err = case err of
-  JurisdictionNotFound _ -> do
-    status status404
-    json err
-  JurisdictionNameNotFound _ -> do
-    status status404
-    json err
+  	JurisdictionNotFound _ -> do
+		status status404
+		json err
+  	JurisdictionNameNotFound _ -> do
+		status status404
+		json err
 
 mayParam :: (ScottyError e, Monad m) => LText -> ActionT e m (Maybe Text)
 mayParam name = (Just <$> param name) `rescue` const (return Nothing)

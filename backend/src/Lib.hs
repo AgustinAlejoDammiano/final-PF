@@ -11,19 +11,19 @@ import qualified Feature.Jurisdiction.Service as JurisdictionService
 
 main :: IO ()
 main = do
-  pgEnv <- Database.init
-  let runner app = flip runReaderT pgEnv $ unAppT app
-  MainController.main runner
+	pgEnv <- Database.init
+	let runner app = flip runReaderT pgEnv $ unAppT app
+	MainController.main runner
 
 type Env = (Database.Env)
 
 newtype AppT a = AppT{ unAppT :: ReaderT Env IO a} deriving  ( Applicative, Functor, Monad, MonadIO, MonadReader Env)
 
 instance JurisdictionController.Service AppT where
-  listJurisdictions = JurisdictionService.listJurisdictions
-  getJurisdiction = JurisdictionService.getJurisdiction
-  createJurisdiction = JurisdictionService.createJurisdiction
+	listJurisdictions = JurisdictionService.listJurisdictions
+	getJurisdiction = JurisdictionService.getJurisdiction
+	createJurisdiction = JurisdictionService.createJurisdiction
   
 instance JurisdictionService.Dao AppT where
-  listJurisdictionsFromDB = JurisdictionDao.listJurisdictionsFromDB
-  createJurisdictionFromDB = JurisdictionDao.createJurisdictionFromDB
+	listJurisdictionsFromDB = JurisdictionDao.listJurisdictionsFromDB
+	createJurisdictionFromDB = JurisdictionDao.createJurisdictionFromDB

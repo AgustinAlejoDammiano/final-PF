@@ -14,12 +14,12 @@ newtype JurisdictionWrapper a = JurisdictionWrapper { jurisdictionWrapperJurisdi
 data JurisdictionsWrapper a = JurisdictionsWrapper { jurisdictionsWrapperJurisdictions :: [a], jurisdictionsWrapperCount :: Int } deriving (Eq, Show)
 
 $(commonJSONDeriveMany
-  [ ''Jurisdiction
-  , ''CreateJurisdiction
-  , ''JurisdictionError
-  , ''JurisdictionWrapper
-  , ''JurisdictionsWrapper
-  ])
+	[ ''Jurisdiction
+	, ''CreateJurisdiction
+	, ''JurisdictionError
+	, ''JurisdictionWrapper
+	, ''JurisdictionsWrapper
+	])
 
 instance FromRow Jurisdiction where
-  fromRow = Jurisdiction <$> field <*> field
+	fromRow = Jurisdiction <$> field <*> field

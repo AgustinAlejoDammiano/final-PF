@@ -15,26 +15,26 @@ type App r m = (Jurisdiction.Service m, MonadIO m)
 
 main :: (App r m) => (m Response -> IO Response) -> IO ()
 main runner = do
-  port <- acquirePort
-  scottyT port runner routes
-  where
-    acquirePort = do
-      port <- fromMaybe "" <$> lookupEnv "PORT"
-      return . fromMaybe 3000 $ readMay port
+  	port <- acquirePort
+  	scottyT port runner routes
+  	where
+		acquirePort = do
+      		port <- fromMaybe "" <$> lookupEnv "PORT"
+      		return . fromMaybe 3000 $ readMay port
 
 routes :: (App r m) => ScottyT LText m ()
 routes = do
-  middleware $ cors $ const $ Just simpleCorsResourcePolicy
-    { corsRequestHeaders = "Authorization":simpleHeaders
-    , corsMethods = "PUT":"DELETE":simpleMethods
-    }
-  options (regex ".*") $ return ()
+  	middleware $ cors $ const $ Just simpleCorsResourcePolicy
+		{ corsRequestHeaders = "Authorization":simpleHeaders
+		, corsMethods = "PUT":"DELETE":simpleMethods
+		}
+  	options (regex ".*") $ return ()
 
-  defaultHandler $ \str -> do
-    status status500
-    json str
+	defaultHandler $ \str -> do
+		status status500
+		json str
 
-  Jurisdiction.routes
-  
-  get "/api/health" $
-    json True
+	Jurisdiction.routes
+	
+	get "/api/health" $
+		json True

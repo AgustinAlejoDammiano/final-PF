@@ -11,5 +11,5 @@ type InputViolations = Map Text [Text]
 newtype ErrorsWrapper a = ErrorsWrapper { errorsWrapperErrors :: a } deriving (Eq, Show)
 
 $(commonJSONDeriveMany
-  [ ''ErrorsWrapper
-  ])
+	[ ''ErrorsWrapper
+	])
