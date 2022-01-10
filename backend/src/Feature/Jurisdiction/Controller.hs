@@ -31,12 +31,18 @@ routes = do
 
 jurisdictionErrorHandler :: (ScottyError e, Monad m) => JurisdictionError -> ActionT e m ()
 jurisdictionErrorHandler err = case err of
-  	JurisdictionNotFound _ -> do
-		status status404
-		json err
-  	JurisdictionNameNotFound _ -> do
-		status status404
-		json err
+      JurisdictionNotFound _ -> do
+        status status404
+        json err
+      JurisdictionNameNotFound _ -> do
+        status status404
+        json err
+      JurisdictionAlreadyExist _ -> do
+        status status409
+        json err
+      UnknownError -> do
+        status status500
+        json err
 
 mayParam :: (ScottyError e, Monad m) => LText -> ActionT e m (Maybe Text)
 mayParam name = (Just <$> param name) `rescue` const (return Nothing)
@@ -45,4 +51,5 @@ parseJurisdictionFilter :: (ScottyError e, Monad m) => ActionT e m JurisdictionF
 parseJurisdictionFilter = JurisdictionFilter <$> mayParam "name"
 
 createJurisdictionForm :: (Monad m) => DF.Form [Text] m CreateJurisdiction
-createJurisdictionForm = CreateJurisdiction <$> "name" .: DF.text Nothing
+createJurisdictionForm = CreateJurisdiction <$> "id" .: DF.stringRead ["Not a number"] (Just 0)
+                                            <*> "name" .: DF.text Nothing

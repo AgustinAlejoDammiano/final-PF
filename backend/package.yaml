@@ -46,6 +46,15 @@ library:
   - digestive-functors-aeson
   - wai-cors
   - template-haskell
+  - http-conduit
+  - conduit-extra
+  - conduit
+  - resourcet
+  - zip
+  - cassava
+  - bytestring
+  - text
+  - directory
   # client
   # wreq
   # http-client
