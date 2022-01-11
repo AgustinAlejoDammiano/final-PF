@@ -8,6 +8,7 @@ https://github.com/eckyputrady/haskell-scotty-realworld-example-app
 
 DATABASE_URL (postgresql://postgres:postgres@localhost:5432/covid)
 PORT (3000)
+DATA_URL (https://sisa.msal.gov.ar/datos/descargas/covid-19/files/datos_nomivac_covid19.zip)
 
 Install Stack.
 
@@ -41,6 +42,7 @@ curl -X POST http://example.com
 
 "https://sisa.msal.gov.ar/datos/descargas/covid-19/files/datos_nomivac_covid19.zip"
 "https://github.com/AgustinAlejoDammiano/final-PF/blob/master/documentation/test.zip?raw=true"
+"https://drive.google.com/uc?id=1O7jO75EU22h5Z58KxqM2UNEvp8zR9okp&export=download"
 
 "sexo","grupo_etario","jurisdiccion_residencia","jurisdiccion_residencia_id","depto_residencia","depto_residencia_id","jurisdiccion_aplicacion","jurisdiccion_aplicacion_id","depto_aplicacion","depto_aplicacion_id","fecha_aplicacion","vacuna",cod_dosis_generica,"nombre_dosis_generica","condicion_aplicacion",orden_dosis,"lote_vacuna"
 "M","40-49","Corrientes","18","Capital","021","Corrientes","18","Capital","021","2021-08-16","Sputnik",3,"2da","18 a 59 años CON Factores de Riesgo",2,"II-110221"
