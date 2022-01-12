@@ -34,6 +34,7 @@ library
       Feature.Jurisdiction.Service
       Feature.Jurisdiction.Types
       Feature.Update.Controller
+      Feature.Update.Dao
       Feature.Update.Repository
       Feature.Update.Service
       Feature.Update.Types
@@ -79,6 +80,7 @@ library
     , scotty
     , template-haskell
     , text
+    , time
     , wai
     , wai-cors
     , warp

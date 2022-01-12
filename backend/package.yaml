@@ -55,6 +55,7 @@ library:
   - bytestring
   - text
   - directory
+  - time
   ghc-options:
   - -Wall
   - -Werror

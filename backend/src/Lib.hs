@@ -13,6 +13,7 @@ import qualified Feature.Jurisdiction.Service as JurisdictionService
 import qualified Feature.Update.Controller as UpdateController
 import qualified Feature.Update.Service as UpdateService
 import qualified Feature.Update.Repository as UpdateRepository
+import qualified Feature.Update.Dao as UpdateDao
 
 main :: IO ()
 main = do
@@ -41,3 +42,7 @@ instance UpdateService.JurisdictionService AppT where
 
 instance UpdateService.UpdateRepository AppT where
     loadData = UpdateRepository.loadData
+
+instance UpdateService.UpdateDao AppT where
+    listUpdatesFromDB = UpdateDao.listUpdatesFromDB
+    createUpdateFromDB = UpdateDao.createUpdateFromDB
