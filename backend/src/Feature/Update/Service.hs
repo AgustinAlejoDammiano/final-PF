@@ -25,3 +25,6 @@ update url = do
         Right _ -> createUpdateFromDB t
         Left e -> return $ Left e
     return result'
+
+listUpdates :: (UpdateDao m) => Pagination -> m [UpdateDate]
+listUpdates = listUpdatesFromDB

@@ -38,6 +38,14 @@ curl --request POST \
    --url http://localhost:3000/api/update\
    --header 'Content-Length: 0'
 
+curl --request GET \
+   --url http://localhost:3000/api/update\
+   --header 'Content-Length: 0'
+
+curl --request POST \
+   --url http://localhost:3000/api/update\
+   --header 'Content-Length: 0'
+
 curl -X POST http://example.com
 
 "https://sisa.msal.gov.ar/datos/descargas/covid-19/files/datos_nomivac_covid19.zip"

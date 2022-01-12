@@ -36,6 +36,7 @@ instance JurisdictionService.Dao AppT where
 
 instance UpdateController.Service AppT where
     update = UpdateService.update
+    listUpdates = UpdateService.listUpdates
 
 instance UpdateService.JurisdictionService AppT where
     createJurisdiction = JurisdictionService.createJurisdiction
