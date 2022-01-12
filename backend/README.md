@@ -46,3 +46,7 @@ curl -X POST http://example.com
 
 "sexo","grupo_etario","jurisdiccion_residencia","jurisdiccion_residencia_id","depto_residencia","depto_residencia_id","jurisdiccion_aplicacion","jurisdiccion_aplicacion_id","depto_aplicacion","depto_aplicacion_id","fecha_aplicacion","vacuna",cod_dosis_generica,"nombre_dosis_generica","condicion_aplicacion",orden_dosis,"lote_vacuna"
 "M","40-49","Corrientes","18","Capital","021","Corrientes","18","Capital","021","2021-08-16","Sputnik",3,"2da","18 a 59 años CON Factores de Riesgo",2,"II-110221"
+
+source ./setEnv.sh && stack build && stack exec backend-exe
+
+stack build && stack test

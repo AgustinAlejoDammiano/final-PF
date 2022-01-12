@@ -55,14 +55,6 @@ library:
   - bytestring
   - text
   - directory
-  # client
-  # wreq
-  # http-client
-
-  # cryptonite
-  # lens
-  # slug
-  # convertible
   ghc-options:
   - -Wall
   - -Werror
@@ -82,7 +74,7 @@ executables:
 
 tests:
   backend-test:
-    main:                Spec.hs
+    main:                Main.hs
     source-dirs:         test
     ghc-options:
     - -threaded
@@ -90,3 +82,13 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - backend
+    - hspec
+    - postgresql-simple
+    - string-random
+    - data-has
+    - aeson
+    - http-client
+    - wreq
+    - http-types
+    - mtl
+    - lens
