@@ -6,7 +6,7 @@ import Data.Time.LocalTime
 import Database.PostgreSQL.Simple.FromRow
 
 data Update = Update{ updateState :: Bool}
-data UpdateError = URLNotFound Text | UnknownError
+data UpdateError = UnknownError
 data UpdateDate = UpdateDate{ updateDateDate :: LocalTime}
 
 newtype UpdateWrapper a = UpdateWrapper { updateWrapperUpdate :: a } deriving (Eq, Show)

@@ -29,9 +29,6 @@ routes = do
 
 updateErrorHandler :: (ScottyError e, Monad m) => UpdateError -> ActionT e m ()
 updateErrorHandler err = case err of
-    URLNotFound _ -> do
-        status status502
-        json err
     UnknownError -> do
         status status500
         json err
