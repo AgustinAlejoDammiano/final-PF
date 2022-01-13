@@ -42,6 +42,10 @@ library
       Feature.Update.Repository
       Feature.Update.Service
       Feature.Update.Types
+      Feature.Vaccine.Controller
+      Feature.Vaccine.Dao
+      Feature.Vaccine.Service
+      Feature.Vaccine.Types
       Lib
       Platform.Controller
       Platform.Database

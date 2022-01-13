@@ -14,6 +14,10 @@ import qualified Feature.Department.Controller as DepartmentController
 import qualified Feature.Department.Dao as DepartmentDao
 import qualified Feature.Department.Service as DepartmentService
 
+import qualified Feature.Vaccine.Controller as VaccineController
+import qualified Feature.Vaccine.Dao as VaccineDao
+import qualified Feature.Vaccine.Service as VaccineService
+
 import qualified Feature.Update.Controller as UpdateController
 import qualified Feature.Update.Service as UpdateService
 import qualified Feature.Update.Repository as UpdateRepository
@@ -54,6 +58,10 @@ instance UpdateService.DepartmentService AppT where
     createDepartment = DepartmentService.createDepartment
     deleteDepartments = DepartmentService.deleteDepartments
 
+instance UpdateService.VaccineService AppT where
+    createVaccine = VaccineService.createVaccine
+    deleteVaccines = VaccineService.deleteVaccines
+
 instance UpdateService.UpdateRepository AppT where
     loadData = UpdateRepository.loadData
 
@@ -73,3 +81,17 @@ instance DepartmentService.Dao AppT where
     createDepartmentFromDB = DepartmentDao.createDepartmentFromDB
     deleteDepartmentFromDB = DepartmentDao.deleteDepartmentFromDB
     deleteDepartmentsFromDB = DepartmentDao.deleteDepartmentsFromDB
+
+instance VaccineController.Service AppT where
+    listVaccines = VaccineService.listVaccines
+    getVaccine = VaccineService.getVaccine
+    createVaccine = VaccineService.createVaccine
+    deleteVaccine = VaccineService.deleteVaccine
+    deleteVaccines = VaccineService.deleteVaccines
+  
+instance VaccineService.Dao AppT where
+    listVaccinesFromDB = VaccineDao.listVaccinesFromDB
+    createVaccineFromDB = VaccineDao.createVaccineFromDB
+    deleteVaccineFromDB = VaccineDao.deleteVaccineFromDB
+    deleteVaccinesFromDB = VaccineDao.deleteVaccinesFromDB
+    

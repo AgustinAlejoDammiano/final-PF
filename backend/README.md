@@ -1,8 +1,5 @@
 # backend
 
-http://eckyputrady.com/2018/09/22/Haskell-RESTful/
-
-https://github.com/eckyputrady/haskell-scotty-realworld-example-app
 
 # Enviroment
 
@@ -28,7 +25,7 @@ sudo apt install -y libpq-dev
 curl --request POST -i \
    --url http://localhost:3000/api/jurisdiction \
    --header 'content-type: application/json' \
-   --data '{ "jurisdiction": { "id": "69", "name": "XD" } }'
+   --data '{ "jurisdiction": { "name": "XD" } }'
 
 curl --request GET \
    --url http://localhost:3000/api/jurisdiction?name="Buenos" \
@@ -37,7 +34,11 @@ curl --request GET \
 curl --request GET \
    --url http://localhost:3000/api/department?name="Buenos" \
    --header 'content-type: application/json'
-   
+
+curl --request GET \
+   --url http://localhost:3000/api/vaccine?name="Buenos" \
+   --header 'content-type: application/json' 
+
 curl --request DELETE -i \
    --url http://localhost:3000/api/jurisdiction/69
 
