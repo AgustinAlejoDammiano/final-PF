@@ -33,6 +33,10 @@ curl --request POST -i \
 curl --request GET \
    --url http://localhost:3000/api/jurisdiction?name="Buenos" \
    --header 'content-type: application/json'
+
+curl --request GET \
+   --url http://localhost:3000/api/department?name="Buenos" \
+   --header 'content-type: application/json'
    
 curl --request DELETE -i \
    --url http://localhost:3000/api/jurisdiction/69

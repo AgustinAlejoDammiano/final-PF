@@ -29,6 +29,10 @@ library
       Feature.Common.HTTP
       Feature.Common.Types
       Feature.Common.Utils
+      Feature.Department.Controller
+      Feature.Department.Dao
+      Feature.Department.Service
+      Feature.Department.Types
       Feature.Jurisdiction.Controller
       Feature.Jurisdiction.Dao
       Feature.Jurisdiction.Service

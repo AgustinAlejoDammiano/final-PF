@@ -10,6 +10,10 @@ import qualified Feature.Jurisdiction.Controller as JurisdictionController
 import qualified Feature.Jurisdiction.Dao as JurisdictionDao
 import qualified Feature.Jurisdiction.Service as JurisdictionService
 
+import qualified Feature.Department.Controller as DepartmentController
+import qualified Feature.Department.Dao as DepartmentDao
+import qualified Feature.Department.Service as DepartmentService
+
 import qualified Feature.Update.Controller as UpdateController
 import qualified Feature.Update.Service as UpdateService
 import qualified Feature.Update.Repository as UpdateRepository
@@ -45,10 +49,27 @@ instance UpdateController.Service AppT where
 instance UpdateService.JurisdictionService AppT where
     createJurisdiction = JurisdictionService.createJurisdiction
     deleteJurisdictions = JurisdictionService.deleteJurisdictions
-    
+
+instance UpdateService.DepartmentService AppT where
+    createDepartment = DepartmentService.createDepartment
+    deleteDepartments = DepartmentService.deleteDepartments
+
 instance UpdateService.UpdateRepository AppT where
     loadData = UpdateRepository.loadData
 
 instance UpdateService.UpdateDao AppT where
     listUpdatesFromDB = UpdateDao.listUpdatesFromDB
     createUpdateFromDB = UpdateDao.createUpdateFromDB
+
+instance DepartmentController.Service AppT where
+    listDepartments = DepartmentService.listDepartments
+    getDepartment = DepartmentService.getDepartment
+    createDepartment = DepartmentService.createDepartment
+    deleteDepartment = DepartmentService.deleteDepartment
+    deleteDepartments = DepartmentService.deleteDepartments
+  
+instance DepartmentService.Dao AppT where
+    listDepartmentsFromDB = DepartmentDao.listDepartmentsFromDB
+    createDepartmentFromDB = DepartmentDao.createDepartmentFromDB
+    deleteDepartmentFromDB = DepartmentDao.deleteDepartmentFromDB
+    deleteDepartmentsFromDB = DepartmentDao.deleteDepartmentsFromDB
