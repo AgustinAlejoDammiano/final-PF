@@ -8,6 +8,8 @@ import Feature.Common.Types
 class (Monad m) => Dao m where
     listJurisdictionsFromDB ::  JurisdictionFilter -> Pagination -> m [Jurisdiction]
     createJurisdictionFromDB ::  CreateJurisdiction -> m(Either JurisdictionError Bool)
+    deleteJurisdictionFromDB :: Integer -> m (Either JurisdictionError Bool)
+    deleteJurisdictionsFromDB :: m (Either JurisdictionError Bool)
 
 listJurisdictions :: (Dao m) => JurisdictionFilter -> Pagination -> m [Jurisdiction]
 listJurisdictions = listJurisdictionsFromDB
@@ -26,3 +28,9 @@ createJurisdiction param = do
         Left e -> return $ Left e
         Right _ -> getJurisdiction $ createJurisdictionName param
     return jurisdiction
+
+deleteJurisdiction :: (Dao m) => Integer -> m (Either JurisdictionError Bool)
+deleteJurisdiction = deleteJurisdictionFromDB
+
+deleteJurisdictions :: (Dao m) => m (Either JurisdictionError Bool)
+deleteJurisdictions = deleteJurisdictionsFromDB

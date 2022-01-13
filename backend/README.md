@@ -34,9 +34,8 @@ curl --request GET \
    --url http://localhost:3000/api/jurisdiction?name="Buenos" \
    --header 'content-type: application/json'
    
-curl --request POST \
-   --url http://localhost:3000/api/update\
-   --header 'Content-Length: 0'
+curl --request DELETE -i \
+   --url http://localhost:3000/api/jurisdiction/69
 
 curl --request GET \
    --url http://localhost:3000/api/update\

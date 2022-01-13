@@ -14,6 +14,8 @@ class Monad m => Service m where
     listJurisdictions :: JurisdictionFilter -> Pagination -> m [Jurisdiction]
     getJurisdiction :: Text -> m(Either JurisdictionError Jurisdiction)
     createJurisdiction :: CreateJurisdiction -> m(Either JurisdictionError Jurisdiction)
+    deleteJurisdiction :: Integer -> m (Either JurisdictionError Bool)
+    deleteJurisdictions :: m (Either JurisdictionError Bool)
 
 routes :: (Service m, MonadIO m) => ScottyT LText m ()
 routes = do
@@ -27,7 +29,17 @@ routes = do
     post "/api/jurisdiction" $ do
         req <- parseJsonBody ("jurisdiction" .: createJurisdictionForm)
         result <- stopIfError jurisdictionErrorHandler $ createJurisdiction req
+        status status201
         json $ JurisdictionWrapper result
+
+    delete "/api/jurisdiction" $ do
+        _ <- stopIfError jurisdictionErrorHandler $ deleteJurisdictions 
+        status status204
+
+    delete "/api/jurisdiction/:id" $ do
+        i <- param "id"
+        _ <- stopIfError jurisdictionErrorHandler $ deleteJurisdiction i
+        status status204
 
 jurisdictionErrorHandler :: (ScottyError e, Monad m) => JurisdictionError -> ActionT e m ()
 jurisdictionErrorHandler err = case err of

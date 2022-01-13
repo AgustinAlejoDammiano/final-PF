@@ -29,10 +29,14 @@ instance JurisdictionController.Service AppT where
     listJurisdictions = JurisdictionService.listJurisdictions
     getJurisdiction = JurisdictionService.getJurisdiction
     createJurisdiction = JurisdictionService.createJurisdiction
+    deleteJurisdiction = JurisdictionService.deleteJurisdiction
+    deleteJurisdictions = JurisdictionService.deleteJurisdictions
   
 instance JurisdictionService.Dao AppT where
     listJurisdictionsFromDB = JurisdictionDao.listJurisdictionsFromDB
     createJurisdictionFromDB = JurisdictionDao.createJurisdictionFromDB
+    deleteJurisdictionFromDB = JurisdictionDao.deleteJurisdictionFromDB
+    deleteJurisdictionsFromDB = JurisdictionDao.deleteJurisdictionsFromDB
 
 instance UpdateController.Service AppT where
     update = UpdateService.update
@@ -40,7 +44,8 @@ instance UpdateController.Service AppT where
 
 instance UpdateService.JurisdictionService AppT where
     createJurisdiction = JurisdictionService.createJurisdiction
-
+    deleteJurisdictions = JurisdictionService.deleteJurisdictions
+    
 instance UpdateService.UpdateRepository AppT where
     loadData = UpdateRepository.loadData
 

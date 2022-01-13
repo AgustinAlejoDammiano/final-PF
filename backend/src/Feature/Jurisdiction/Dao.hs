@@ -20,6 +20,18 @@ createJurisdictionFromDB param = do
     return $ second (\_ -> True) result
     where qry = "insert into jurisdiction (id, name) values (?, ?)"
 
+deleteJurisdictionFromDB :: Database r m => Integer -> m (Either JurisdictionError Bool)
+deleteJurisdictionFromDB i = do
+    result <- withConn handler $ \conn -> execute conn qry (Only i)
+    return $ second (\_ -> True) result
+    where qry = "delete from jurisdiction where id = ?"
+
+deleteJurisdictionsFromDB :: Database r m => m (Either JurisdictionError Bool)
+deleteJurisdictionsFromDB = do
+    result <- withConn handler $ \conn -> execute conn qry ()
+    return $ second (\_ -> True) result
+    where qry = "delete from jurisdiction"
+
 handler :: (SqlError -> ConstraintViolation -> IO (Either JurisdictionError a))
 handler _ (UniqueViolation x) = return $ Left $ JurisdictionAlreadyExist $ decodeUtf8 x
 handler _ _ = return $ Left UnknownError
