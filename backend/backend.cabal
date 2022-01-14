@@ -33,6 +33,10 @@ library
       Feature.Department.Dao
       Feature.Department.Service
       Feature.Department.Types
+      Feature.Dose.Controller
+      Feature.Dose.Dao
+      Feature.Dose.Service
+      Feature.Dose.Types
       Feature.Jurisdiction.Controller
       Feature.Jurisdiction.Dao
       Feature.Jurisdiction.Service

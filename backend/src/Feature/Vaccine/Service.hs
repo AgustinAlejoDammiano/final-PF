@@ -22,10 +22,16 @@ getVaccine name = runExceptT $ do
         _ -> throwError $ VaccineNameNotFound name
 
 createVaccine :: (Dao m) => CreateVaccine -> m(Either VaccineError Vaccine)
-createVaccine param = do 
+createVaccine param = createVaccineHandle param (\e -> return $ Left e)
+
+createVaccineOrFind :: (Dao m) => CreateVaccine -> m(Either VaccineError Vaccine)
+createVaccineOrFind param = createVaccineHandle param (\_ -> getVaccine $ createVaccineName param)
+
+createVaccineHandle :: (Dao m) => CreateVaccine -> (VaccineError -> m(Either VaccineError Vaccine)) -> m(Either VaccineError Vaccine)
+createVaccineHandle param handler = do
     result <- createVaccineFromDB param
     vaccine <- case result of
-        Left e -> return $ Left e
+        Left e -> handler e
         Right _ -> getVaccine $ createVaccineName param
     return vaccine
 
