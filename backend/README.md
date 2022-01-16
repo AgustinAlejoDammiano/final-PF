@@ -1,26 +1,50 @@
-# backend
+# Backend
 
+Api make in Haskell that provides the information of vaccination in Argentina.
 
-# Enviroment
+# Setup
+
+## Enviroment
+
+Set these enviroment variable, the data between parenthesis is the default:
 
 DATABASE_URL (postgresql://postgres:postgres@localhost:5432/covid)
-PORT (3000)
-DATA_URL (https://sisa.msal.gov.ar/datos/descargas/covid-19/files/datos_nomivac_covid19.zip)
+PORT         (3000)
+DATA_URL     (https://sisa.msal.gov.ar/datos/descargas/covid-19/files/datos_nomivac_covid19.zip)
 
-Install Stack.
+Example on how to set them:
 
-Install PostgreSQL.
+```
+export PORT="4000"
+```
 
-sudo apt-get install libbz2-dev
+## Installation
 
-stack setup
+* Install Stack.
 
+* Install PostgreSQL.
+
+* ```sudo apt-get install libbz2-dev```
+
+* ```sudo apt install -y libpq-dev```
+
+# Build
+
+```
 stack build
+```
 
+# Run
+
+```
 stack exec backend-exe
+```
 
-sudo apt install -y libpq-dev
+# Test
 
+```
+TODO
+```
 
 curl --request POST -i \
    --url http://localhost:3000/api/jurisdiction \
