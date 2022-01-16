@@ -21,7 +21,7 @@ import Data.Foldable as F
 
 data Row = Row{ rowJurisdictionResidence :: Text, rowJurisdictionResidenceId :: Text, 
                 rowDepartmentResidence :: Text, rowDepartmentResidenceId :: Text, 
-                rowVaccine :: Text, rowSex :: Text, rowAge :: Text, rowDate :: Text, rowSerie :: Text, 
+                rowVaccine :: Text, rowSex :: Text, rowAge :: Text, rowDate :: Text, rowSerie :: Integer, 
                 rowCondition :: Text, rowLot :: Text, rowJurisdictionApplication :: Text, 
                 rowJurisdictionApplicationId :: Text, rowDepartmentApplication :: Text, 
                 rowDepartmentApplicationId :: Text } deriving (Eq, Show)
@@ -30,7 +30,7 @@ instance FromNamedRecord Row where
     parseNamedRecord x = Row <$> (x .: "jurisdiccion_residencia") <*> (x .: "jurisdiccion_residencia_id")
                         <*> (x .: "depto_residencia") <*> (x .: "depto_residencia_id") <*> (x .: "vacuna") 
                         <*> (x .: "sexo") <*> (x .: "grupo_etario") <*> (x .: "fecha_aplicacion")
-                        <*> (x .: "nombre_dosis_generica") <*> (x .: "condicion_aplicacion") 
+                        <*> (x .: "orden_dosis") <*> (x .: "condicion_aplicacion") 
                         <*> (x .: "lote_vacuna") <*> (x .: "jurisdiccion_aplicacion") <*> (x .: "jurisdiccion_aplicacion_id")
                         <*> (x .: "depto_aplicacion") <*> (x .: "depto_aplicacion_id")
         
@@ -63,7 +63,7 @@ handleRow cj cd cv cdo r = do
     _ <- cd $ CreateDepartment (parseIntger $ rowDepartmentApplicationId r) (rowDepartmentApplication r)
     ev <- cv $ CreateVaccine (rowVaccine r)
     _ <- case ev of
-        Right v -> cdo $ CreateDose (rowSex r) (rowAge r) (rowCondition r) (rowLot r) (parseDateOrThrow $ rowDate r) (parseSerie $ rowSerie r) (vaccineId v)
+        Right v -> cdo $ CreateDose (rowSex r) (rowAge r) (rowCondition r) (rowLot r) (parseDateOrThrow $ rowDate r) (rowSerie r) (vaccineId v)
             (parseIntger $ rowJurisdictionResidenceId r) (parseIntger $ rowDepartmentResidenceId r) (parseIntger $ rowJurisdictionApplicationId r)
             (parseIntger $ rowDepartmentApplicationId r)
         Left _ -> error "Error update"

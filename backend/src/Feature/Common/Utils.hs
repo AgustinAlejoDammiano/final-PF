@@ -18,14 +18,3 @@ parseDateOrThrow t = case m of
     Just a -> a
     Nothing -> error "Date Error"
     where m = parseDate t
-
-parseSerie :: Text -> Integer
-parseSerie t = parseIntger $ pack $ deleteLastTwo $ unpack t 
-
-deleteLastTwo :: [a] -> [a]
-deleteLastTwo = deleteLast . deleteLast
-
-deleteLast :: [a] -> [a]
-deleteLast [] = error "Empty list!"
-deleteLast [_] = []
-deleteLast (h:t) = [h] ++ deleteLast t
