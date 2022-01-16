@@ -27,6 +27,10 @@ import qualified Feature.Update.Service as UpdateService
 import qualified Feature.Update.Repository as UpdateRepository
 import qualified Feature.Update.Dao as UpdateDao
 
+import qualified Feature.Date.Controller as DateController
+import qualified Feature.Date.Dao as DateDao
+import qualified Feature.Date.Service as DateService
+
 main :: IO ()
 main = do
     pgEnv <- Database.init
@@ -43,12 +47,14 @@ instance JurisdictionController.Service AppT where
     createJurisdiction = JurisdictionService.createJurisdiction
     deleteJurisdiction = JurisdictionService.deleteJurisdiction
     deleteJurisdictions = JurisdictionService.deleteJurisdictions
-  
+    listJurisdictionsDose = JurisdictionService.listJurisdictionsDose
+
 instance JurisdictionService.Dao AppT where
     listJurisdictionsFromDB = JurisdictionDao.listJurisdictionsFromDB
     createJurisdictionFromDB = JurisdictionDao.createJurisdictionFromDB
     deleteJurisdictionFromDB = JurisdictionDao.deleteJurisdictionFromDB
     deleteJurisdictionsFromDB = JurisdictionDao.deleteJurisdictionsFromDB
+    listJurisdictionsDoseFromDB = JurisdictionDao.listJurisdictionsDoseFromDB
 
 instance UpdateController.Service AppT where
     update = UpdateService.update
@@ -115,4 +121,9 @@ instance DoseService.Dao AppT where
     createDoseFromDB = DoseDao.createDoseFromDB
     deleteDoseFromDB = DoseDao.deleteDoseFromDB
     deleteDosesFromDB = DoseDao.deleteDosesFromDB
-    
+
+instance DateController.Service AppT where
+    listDatesDose = DateService.listDatesDose
+
+instance DateService.Dao AppT where
+    listDatesDoseFromDB = DateDao.listDatesDoseFromDB

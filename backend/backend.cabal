@@ -29,6 +29,10 @@ library
       Feature.Common.HTTP
       Feature.Common.Types
       Feature.Common.Utils
+      Feature.Date.Controller
+      Feature.Date.Dao
+      Feature.Date.Service
+      Feature.Date.Types
       Feature.Department.Controller
       Feature.Department.Dao
       Feature.Department.Service

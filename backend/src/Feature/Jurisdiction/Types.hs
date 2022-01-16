@@ -7,6 +7,9 @@ import Platform.Util
 data JurisdictionFilter = JurisdictionFilter{ jurisdictionFilterName :: Maybe Text} deriving (Eq, Show)
 
 data Jurisdiction = Jurisdiction{ jurisdictionId :: Integer, jurisdictionName :: Text} deriving (Eq, Show)
+data JurisdictionDose = JurisdictionDose{ jurisdictionDoseId :: Integer, jurisdictionDoseName :: Text, 
+    jurisdictionDoseFirstDose :: Integer, jurisdictionDoseSecondDose :: Integer, jurisdictionDoseThirdDose :: Integer,
+    jurisdictionDoseTotalDose :: Integer }
 data CreateJurisdiction = CreateJurisdiction{ createJurisdictionId :: Integer, createJurisdictionName :: Text} deriving (Eq, Show)
 data JurisdictionError = JurisdictionNotFound Integer | JurisdictionNameNotFound Text | JurisdictionAlreadyExist Text | UnknownError
 
@@ -15,6 +18,7 @@ data JurisdictionsWrapper a = JurisdictionsWrapper { jurisdictionsWrapperJurisdi
 
 $(commonJSONDeriveMany
     [ ''Jurisdiction
+    , ''JurisdictionDose
     , ''CreateJurisdiction
     , ''JurisdictionError
     , ''JurisdictionWrapper
@@ -23,3 +27,6 @@ $(commonJSONDeriveMany
 
 instance FromRow Jurisdiction where
     fromRow = Jurisdiction <$> field <*> field
+
+instance FromRow JurisdictionDose where
+    fromRow = JurisdictionDose <$> field <*> field <*> field <*> field <*> field <*> field

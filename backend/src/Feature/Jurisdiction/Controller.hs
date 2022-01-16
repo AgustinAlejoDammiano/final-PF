@@ -16,6 +16,7 @@ class Monad m => Service m where
     createJurisdiction :: CreateJurisdiction -> m(Either JurisdictionError Jurisdiction)
     deleteJurisdiction :: Integer -> m (Either JurisdictionError Bool)
     deleteJurisdictions :: m (Either JurisdictionError Bool)
+    listJurisdictionsDose :: Pagination -> m [JurisdictionDose]
 
 routes :: (Service m, MonadIO m) => ScottyT LText m ()
 routes = do
@@ -40,6 +41,11 @@ routes = do
         i <- param "id"
         _ <- stopIfError jurisdictionErrorHandler $ deleteJurisdiction i
         status status204
+
+    get "/api/jurisdiction/dose" $ do
+        pagination <- parsePagination
+        result <- lift $ listJurisdictionsDose pagination
+        json $ JurisdictionsWrapper result (length result)
 
 jurisdictionErrorHandler :: (ScottyError e, Monad m) => JurisdictionError -> ActionT e m ()
 jurisdictionErrorHandler err = case err of

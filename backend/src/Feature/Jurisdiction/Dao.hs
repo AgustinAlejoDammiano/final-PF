@@ -32,6 +32,33 @@ deleteJurisdictionsFromDB = do
     return $ second (\_ -> True) result
     where qry = "delete from jurisdiction"
 
+listJurisdictionsDoseFromDB :: Database r m => Pagination -> m [JurisdictionDose]
+listJurisdictionsDoseFromDB pagination = do 
+    result <- withConn handler $ \conn -> query conn qry (paginationLimit pagination, paginationOffset pagination)
+    return $ fromRight [] result
+    where qry = "\
+    \with firstDose as ( \
+        \select residence_jurisdiction_id as id, count(*) as total \
+        \from dose_application join jurisdiction on dose_application.residence_jurisdiction_id = jurisdiction.id \
+        \where serie = 1 and jurisdiction.name != 'S.I.' \
+        \group by residence_jurisdiction_id \
+    \), \
+    \secondDose as ( \
+        \select residence_jurisdiction_id as id, count(*) as total \
+        \from dose_application join jurisdiction on dose_application.residence_jurisdiction_id = jurisdiction.id \
+        \where serie = 2 and jurisdiction.name != 'S.I.' \
+        \group by residence_jurisdiction_id \
+    \), \
+    \thirdDose as ( \
+        \select residence_jurisdiction_id as id, count(*) as total \
+        \from dose_application join jurisdiction on dose_application.residence_jurisdiction_id = jurisdiction.id \
+        \where serie = 3 and jurisdiction.name != 'S.I.' \
+        \group by residence_jurisdiction_id \
+    \) \
+    \select jurisdiction.id, jurisdiction.name, firstDose.total, secondDose.total, thirdDose.total, firstDose.total + secondDose.total + thirdDose.total \
+    \from firstDose join secondDose on firstDose.id = secondDose.id join thirdDose on firstDose.id = thirdDose.id join jurisdiction on firstDose.id = jurisdiction.id \
+    \limit greatest(0, ?) offset greatest(0, ?)"
+
 handler :: (SqlError -> ConstraintViolation -> IO (Either JurisdictionError a))
 handler _ (UniqueViolation x) = return $ Left $ JurisdictionAlreadyExist $ decodeUtf8 x
 handler _ _ = return $ Left UnknownError

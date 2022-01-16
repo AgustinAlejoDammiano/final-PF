@@ -10,6 +10,7 @@ class (Monad m) => Dao m where
     createJurisdictionFromDB ::  CreateJurisdiction -> m(Either JurisdictionError Bool)
     deleteJurisdictionFromDB :: Integer -> m (Either JurisdictionError Bool)
     deleteJurisdictionsFromDB :: m (Either JurisdictionError Bool)
+    listJurisdictionsDoseFromDB :: Pagination -> m [JurisdictionDose]
 
 listJurisdictions :: (Dao m) => JurisdictionFilter -> Pagination -> m [Jurisdiction]
 listJurisdictions = listJurisdictionsFromDB
@@ -34,3 +35,6 @@ deleteJurisdiction = deleteJurisdictionFromDB
 
 deleteJurisdictions :: (Dao m) => m (Either JurisdictionError Bool)
 deleteJurisdictions = deleteJurisdictionsFromDB
+
+listJurisdictionsDose :: (Dao m) => Pagination -> m [JurisdictionDose]
+listJurisdictionsDose = listJurisdictionsDoseFromDB
