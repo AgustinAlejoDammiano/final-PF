@@ -1,26 +1,18 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { URLS } from "./constant/urls"
+import withLayout from "./component/Layout/withLayout";
+import Graphs from "./component/Graphs/Graphs";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const UsersWithLayout = withLayout(Graphs);
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path={URLS.home} element={<UsersWithLayout/>} />
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default App;
