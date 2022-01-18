@@ -16,9 +16,12 @@ listJurisdictionsFromDB jf pagination = do
 
 createJurisdictionFromDB :: Database r m => CreateJurisdiction -> m (Either JurisdictionError Bool)
 createJurisdictionFromDB param = do
-    result <- withConn handler $ \conn -> execute conn qry (createJurisdictionId param, createJurisdictionName param)
+    result <- withConn handler $ connection param
     return $ second (\_ -> True) result
-    where qry = "insert into jurisdiction (id, name) values (?, ?)"
+    where 
+        connection j
+            | (createJurisdictionId j) >= 0 = \conn -> execute conn "insert into jurisdiction (id, name) values (?, ?)" (createJurisdictionId j, createJurisdictionName j)
+            | otherwise = \conn -> execute conn "insert into jurisdiction (name) values (?)" (Only $ createJurisdictionName j)
 
 deleteJurisdictionFromDB :: Database r m => Integer -> m (Either JurisdictionError Bool)
 deleteJurisdictionFromDB i = do

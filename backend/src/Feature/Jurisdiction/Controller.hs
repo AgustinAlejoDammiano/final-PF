@@ -69,5 +69,5 @@ parseJurisdictionFilter :: (ScottyError e, Monad m) => ActionT e m JurisdictionF
 parseJurisdictionFilter = JurisdictionFilter <$> mayParam "name"
 
 createJurisdictionForm :: (Monad m) => DF.Form [Text] m CreateJurisdiction
-createJurisdictionForm = CreateJurisdiction <$> "id" .: DF.stringRead ["Not a number"] (Just 0)
+createJurisdictionForm = CreateJurisdiction <$> "id" .: DF.stringRead ["Not a number"] (Just $ -1)
                                             <*> "name" .: DF.text Nothing

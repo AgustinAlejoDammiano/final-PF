@@ -63,5 +63,5 @@ parseDepartmentFilter :: (ScottyError e, Monad m) => ActionT e m DepartmentFilte
 parseDepartmentFilter = DepartmentFilter <$> mayParam "name"
 
 createDepartmentForm :: (Monad m) => DF.Form [Text] m CreateDepartment
-createDepartmentForm = CreateDepartment <$> "id" .: DF.stringRead ["Not a number"] (Just 0)
+createDepartmentForm = CreateDepartment <$> "id" .: DF.stringRead ["Not a number"] (Just $ -1)
                                             <*> "name" .: DF.text Nothing

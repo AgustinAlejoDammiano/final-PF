@@ -16,9 +16,12 @@ listDepartmentsFromDB jf pagination = do
 
 createDepartmentFromDB :: Database r m => CreateDepartment -> m (Either DepartmentError Bool)
 createDepartmentFromDB param = do
-    result <- withConn handler $ \conn -> execute conn qry (createDepartmentId param, createDepartmentName param)
+    result <- withConn handler $ connection param
     return $ second (\_ -> True) result
-    where qry = "insert into department (id, name) values (?, ?)"
+    where 
+        connection d
+            | (createDepartmentId d) >= 0 = \conn -> execute conn "insert into department (id, name) values (?, ?)" (createDepartmentId d, createDepartmentName d)
+            | otherwise = \conn -> execute conn "insert into department (name) values (?)" (Only $ createDepartmentName d)
 
 deleteDepartmentFromDB :: Database r m => Integer -> m (Either DepartmentError Bool)
 deleteDepartmentFromDB i = do
