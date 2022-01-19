@@ -13,7 +13,7 @@ listUpdatesFromDB :: Database r m => Pagination -> m [UpdateDate]
 listUpdatesFromDB pagination = do
     result <- withConn handler $ \conn -> query conn qry (paginationLimit pagination, paginationOffset pagination)
     return $ fromRight [] result
-    where qry = "select last_update from information limit greatest(0, ?) offset greatest(0, ?)"
+    where qry = "select last_update from information order by last_update desc limit greatest(0, ?) offset greatest(0, ?)"
 
 createUpdateFromDB :: Database r m => ZonedTime -> m (Either UpdateError Update)
 createUpdateFromDB param = do
