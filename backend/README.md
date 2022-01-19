@@ -18,6 +18,8 @@ Example on how to set them:
 export PORT="4000"
 ```
 
+Note: is important to create the database before running the application. The default database is name covid.
+
 ## Installation
 
 * Install Stack.

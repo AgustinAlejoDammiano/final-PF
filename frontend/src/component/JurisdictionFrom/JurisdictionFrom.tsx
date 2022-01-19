@@ -16,7 +16,7 @@ export default function JurisdictionFrom() {
         if (name !== undefined) {
             setLoading(true)
             repository.post(name)
-                .then((r) => console.log(r)) //TODO maybe add toast
+                .then((r) => window.location.reload()) //TODO maybe add toast
                 .catch((error: Error) => console.log(error))
                 .finally(() => setLoading(false))
         }

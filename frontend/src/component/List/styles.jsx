@@ -5,7 +5,14 @@ export default makeStyles(theme => ({
         width: "fit-content"
     },
     gridContainer: {
-        justify: "center",
-        justifyContent: "space-between"
+        justify:"center",
     },
+    fab: {
+        margin: "0px",
+        top: "auto",
+        right: "20px",
+        bottom: "20px",
+        left: "auto",
+        position: "fixed"
+    }
 }), {index: 1});

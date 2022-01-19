@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import useStyles from "./styles";
 import Pagination from "./../../model/Pagination/Pagination";
 import Filter from "./../../model/Filter/Filter";
-import Modal from "./../Modal/Modal";
-import { CircularProgress, Container, Grid, Fab } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add';
-import useInfiniteScrolling from "../../hooks/useInifiniteScrolling";
+import { Grid, Button, Typography } from '@material-ui/core'
+import DeleteIcon from '@material-ui/icons/Delete';
 import JurisdictionRepository from "../../repository/JurisdictionRepository";
 import JurisdictionFrom from "../JurisdictionFrom/JurisdictionFrom";
+import withList from "../List/withList";
 
 const repository = new JurisdictionRepository()
 
 export default function JurisdictionList() {
-    const PAGE_SIZE = 20;
+
+    const [deleteJurisdictions, setDeleteJurisdictions] = useState<any[]>([])
 
     const getPage = async (handleNewList: ((jurisdictionList: any[]) => void),
         pagination: Pagination, filter: Filter) => {
@@ -23,21 +23,40 @@ export default function JurisdictionList() {
             .catch((error) => console.log(error)) //TODO
     }
 
-    const classes = useStyles();
-    const [loading, , , , jurisdictionList] = useInfiniteScrolling(getPage, new Filter(), PAGE_SIZE)
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const deleteJurisdiction = (jurisdiction: any) => {
+        return () => {
+            repository.delete(jurisdiction.id)
+                .then(() => {
+                    setDeleteJurisdictions((l) => [...l, jurisdiction])
+                })
+                .catch((error) => console.log(error)) //TODO
+        }
+    }
 
-    const onClose = () => { setIsModalOpen(false) }
-    const onOpen = () => { setIsModalOpen(true) }
+    const onDelete = () => {
+        repository.deleteAll()
+                .then(() => window.location.reload())
+                .catch((error) => console.log(error)) //TODO
+    }
+
+    const classes = useStyles();
 
     const renderJurisdiction = (jurisdiction: any) => {
+        if (deleteJurisdictions.includes(jurisdiction)) {
+            return null
+        }
         return (
             <Grid container className={classes.gridContainer} spacing={3}>
                 <Grid item>
-                    {jurisdiction.id}
+                    <Typography variant="body2">{jurisdiction.id}</Typography>
                 </Grid>
                 <Grid item>
-                    {jurisdiction.name}
+                    <Typography variant="body2">{jurisdiction.name}</Typography>
+                </Grid>
+                <Grid item>
+                    <Button size="small" color="primary" onClick={deleteJurisdiction(jurisdiction)}>
+                        <DeleteIcon />
+                    </Button>
                 </Grid>
             </Grid>
         )
@@ -52,35 +71,16 @@ export default function JurisdictionList() {
                 <Grid item>
                     Name
                 </Grid>
+                <Grid item>
+                    <Button size="small" color="primary" disabled></Button>
+                </Grid>
             </Grid>
         )
     }
 
     const title = "Jurisdiction Form"
 
-    const form = <JurisdictionFrom/>
+    const JurisdictionList = withList(JurisdictionFrom, getPage, renderTitles, renderJurisdiction, title, onDelete)
 
-    return (
-        <>
-            <Container maxWidth={false} className={classes.root}>
-                <Grid container direction="column" className={classes.gridContainer} spacing={3}>
-                    <Grid item>{renderTitles()}</Grid>
-                    {jurisdictionList.map(jurisdiction => <Grid item>{renderJurisdiction(jurisdiction)}</Grid>)}
-                </Grid>
-                <Grid container direction="column" className={classes.gridContainer} spacing={3}>
-                    <Grid item>
-                        <Grid container justify="center" className={classes.gridContainer} spacing={3}>
-                            {loading && <Grid item><CircularProgress color="primary" size={200} /></Grid>}
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </Container>
-            <Fab color="primary" aria-label="add" className={classes.fab} onClick={onOpen}>
-                <AddIcon />
-            </Fab>
-            <Modal isOpen={isModalOpen} onClose={onClose} title={title}>
-                {form}
-            </Modal>
-        </>
-    )
+    return <JurisdictionList />
 }

@@ -2,9 +2,7 @@ import Pagination from "./../model/Pagination/Pagination";
 import Filter from "./../model/Filter/Filter";
 
 export default class JurisdictionRepository {
-    // TODO
-    // private static readonly API_URL: string = process.env.REACT_APP_API_URL || "";
-    private static readonly API_URL: string = "http://localhost:3000/api/jurisdiction";
+    private static readonly API_URL: string = `${process.env.REACT_APP_API_URL || ""}jurisdiction`;
 
     public async list(pagination: Pagination, filter: Filter): Promise<any[]> {
         const options: RequestInit = {
@@ -25,6 +23,28 @@ export default class JurisdictionRepository {
         }
 
         const result: any[] = (await (await fetch(`${JurisdictionRepository.API_URL}`, options)).json())
+
+        return result;
+    }
+
+    public async delete(id: number) : Promise<any> {
+        const options: RequestInit = {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+        }
+
+        const result: any = (await fetch(`${JurisdictionRepository.API_URL}/${id}`, options))
+
+        return result;
+    }
+
+    public async deleteAll() : Promise<any> {
+        const options: RequestInit = {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+        }
+
+        const result: any = (await fetch(`${JurisdictionRepository.API_URL}`, options))
 
         return result;
     }
