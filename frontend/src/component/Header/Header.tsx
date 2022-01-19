@@ -26,7 +26,7 @@ export default function Header() {
 
     const onUpdate = () => {
         repository.update()
-            .then(() => {console.log("SI"); setLastUpdate("Pending");}) //TODO maybe add toast
+            .then(() => {window.location.reload();}) //TODO maybe add toast
             .catch((error: Error) => console.log(error))
     }
 
