@@ -47,12 +47,8 @@ export default function VaccineList() {
         }
         return (
             <Grid container className={classes.gridContainer} spacing={3}>
-                <Grid item>
-                    <Typography variant="body2">{vaccine.id}</Typography>
-                </Grid>
-                <Grid item>
-                    <Typography variant="body2">{vaccine.name}</Typography>
-                </Grid>
+                <Grid item><Typography variant="body2">{vaccine.id}</Typography></Grid>
+                <Grid item><Typography variant="body2">{vaccine.name}</Typography></Grid>
                 <Grid item>
                     <Button size="small" color="primary" onClick={deleteVaccine(vaccine)}>
                         <DeleteIcon />
@@ -65,12 +61,8 @@ export default function VaccineList() {
     const renderTitles = () => {
         return (
             <Grid container className={classes.gridContainer} spacing={3}>
-                <Grid item>
-                    ID
-                </Grid>
-                <Grid item>
-                    Name
-                </Grid>
+                <Grid item><Typography variant="h5">ID</Typography></Grid>
+                <Grid item><Typography variant="h5">Name</Typography></Grid>
                 <Grid item>
                     <Button size="small" color="primary" disabled></Button>
                 </Grid>
