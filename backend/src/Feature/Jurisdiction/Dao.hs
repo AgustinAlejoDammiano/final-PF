@@ -58,8 +58,8 @@ listJurisdictionsDoseFromDB pagination = do
         \where serie = 3 and jurisdiction.name != 'S.I.' \
         \group by residence_jurisdiction_id \
     \) \
-    \select jurisdiction.id, jurisdiction.name, firstDose.total, secondDose.total, thirdDose.total, firstDose.total + secondDose.total + thirdDose.total \
-    \from firstDose join secondDose on firstDose.id = secondDose.id join thirdDose on firstDose.id = thirdDose.id join jurisdiction on firstDose.id = jurisdiction.id \
+    \select jurisdiction.id, jurisdiction.name, coalesce(firstDose.total, 0), coalesce(secondDose.total, 0), coalesce(thirdDose.total, 0), coalesce(firstDose.total + secondDose.total + thirdDose.total, 0) \
+    \from firstDose full outer join secondDose on firstDose.id = secondDose.id full outer join thirdDose on firstDose.id = thirdDose.id join jurisdiction on firstDose.id = jurisdiction.id \
     \limit greatest(0, ?) offset greatest(0, ?)"
 
 handler :: (SqlError -> ConstraintViolation -> IO (Either JurisdictionError a))
