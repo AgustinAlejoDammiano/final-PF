@@ -11,7 +11,7 @@ import useInfiniteScrolling from "../../hooks/useInifiniteScrolling";
 export default function withList(Component: React.ComponentType, getPage: (handleNewList: ((newsList: any[]) => void), pagination: Pagination, filter: Filter) => void,
     renderTitles: () => JSX.Element, renderJurisdiction: (list: any[]) => JSX.Element | null, title: string, onDelete: () => void) {
     return function ComponentWithLayout() {
-        const PAGE_SIZE = 20;
+        const PAGE_SIZE = 19;
 
         const classes = useStyles();
 
