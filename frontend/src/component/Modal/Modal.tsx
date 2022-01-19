@@ -1,6 +1,6 @@
 import React from "react";
 import useStyles from "./styles";
-import { Modal } from "@material-ui/core";
+import { Dialog } from "@material-ui/core";
 import CloseIcon from '@material-ui/icons/Close';
 import Container from "../Container/Container";
 
@@ -18,13 +18,15 @@ export default function CustomModal({ isOpen, onClose, onClickTitle, title, expl
     const classes = useStyles();
 
     return (
-        <Modal
+        <Dialog
+            maxWidth="md"
             className={classes.modal}
             open={isOpen}
-            onClose={onClose}>
+            onClose={onClose}
+            PaperProps={{style: { backgroundColor: 'transparent', boxShadow: 'none', borderRadius: 20 }}}>
                 <Container onClick={onClose} onClickTitle={onClickTitle} title={title} explanation={explanation} icon={<CloseIcon />}>
                     {children}
                 </Container>
-        </Modal>
+        </Dialog>
     )
 }

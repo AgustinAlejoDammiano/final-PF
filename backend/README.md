@@ -78,6 +78,11 @@ curl --request POST \
 
 curl -X POST http://example.com
 
+curl --request POST -i \
+--url http://localhost:3000/api/dose \ 
+--header 'content-type: application/json' \
+--data '{ "dose": { "sex": "M", "age": "40-49", "condition": "40-49", "lot" : "II-110221", "date" : "2021-08-16", "serie" : "2", "vaccineId" : "2",  "residenceJurisdictionId" : "18", "residenceDepartmentId" : "21", "applicationJurisdictionId" : "18", "applicationDepartmentId" : "21" } }'
+
 "https://sisa.msal.gov.ar/datos/descargas/covid-19/files/datos_nomivac_covid19.zip"
 "https://github.com/AgustinAlejoDammiano/final-PF/blob/master/documentation/test.zip?raw=true"
 "https://drive.google.com/uc?id=1O7jO75EU22h5Z58KxqM2UNEvp8zR9okp&export=download"

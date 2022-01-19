@@ -40,6 +40,9 @@ export default function Header() {
                         </div>
                     </Button>
                     <div>
+                        <Button className={classes.connectButton} component={Link} to={URLS.dose} >
+                            <Typography variant="h4" className={classes.text}>Dose</Typography>
+                        </Button>
                         <Button className={classes.connectButton} component={Link} to={URLS.jurisdiction} >
                             <Typography variant="h4" className={classes.text}>Jurisdiction</Typography>
                         </Button>

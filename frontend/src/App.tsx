@@ -6,12 +6,14 @@ import Graphs from "./component/Graphs/Graphs";
 import Jurisdiction from "./component/JurisdictionList/JurisdictionList";
 import Department from "./component/DepartmentList/DepartmentList";
 import Vaccine from "./component/VaccineList/VaccineList";
+import Dose from "./component/DoseList/DoseList";
 
 function App() {
     const GraphsWithLayout = withLayout(Graphs);
     const JurisdictionWithLayout = withLayout(Jurisdiction);
     const DepartmentWithLayout = withLayout(Department);
     const VaccineWithLayout = withLayout(Vaccine);
+    const DoseWithLayout = withLayout(Dose);
     return (
         <BrowserRouter>
             <Routes>
@@ -19,6 +21,7 @@ function App() {
                 <Route path={URLS.jurisdiction} element={<JurisdictionWithLayout/>} />
                 <Route path={URLS.department} element={<DepartmentWithLayout/>} />
                 <Route path={URLS.vaccine} element={<VaccineWithLayout/>} />
+                <Route path={URLS.dose} element={<DoseWithLayout/>} />
             </Routes>
         </BrowserRouter>
     );
