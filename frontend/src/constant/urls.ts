@@ -1,4 +1,6 @@
 export const URLS = {
     home: "/",
-    jurisdiction: "/jurisdiction"
+    jurisdiction: "/jurisdiction",
+    department: "/department",
+    vaccine: "/vaccine"
 }
