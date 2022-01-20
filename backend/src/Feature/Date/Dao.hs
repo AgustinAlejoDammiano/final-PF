@@ -31,7 +31,7 @@ listDatesDoseFromDB pagination = do
         \where serie = 3 and jurisdiction.name != 'S.I.' \
         \group by date \
     \) \
-    \select coalesce(coalesce(firstDose.date, secondDose.date), thirdDose.date), coalesce(firstDose.total, 0), coalesce(secondDose.total, 0), coalesce(thirdDose.total, 0), coalesce(firstDose.total + secondDose.total + thirdDose.total, 0) \
+    \select coalesce(coalesce(firstDose.date, secondDose.date), thirdDose.date), coalesce(firstDose.total, 0), coalesce(secondDose.total, 0), coalesce(thirdDose.total, 0), coalesce(firstDose.total, 0) + coalesce(secondDose.total, 0) + coalesce(thirdDose.total, 0) \
     \from firstDose full outer join secondDose on firstDose.date = secondDose.date full outer join thirdDose on firstDose.date = thirdDose.date \
     \limit greatest(0, ?) offset greatest(0, ?)"
 

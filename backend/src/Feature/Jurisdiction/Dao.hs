@@ -58,7 +58,7 @@ listJurisdictionsDoseFromDB pagination = do
         \where serie = 3 and jurisdiction.name != 'S.I.' \
         \group by residence_jurisdiction_id, name \
     \) \
-    \select coalesce(coalesce(firstDose.id, secondDose.id), thirdDose.id), coalesce(coalesce(firstDose.name, secondDose.name), thirdDose.name), coalesce(firstDose.total, 0), coalesce(secondDose.total, 0), coalesce(thirdDose.total, 0), coalesce(firstDose.total + secondDose.total + thirdDose.total, 0) \
+    \select coalesce(coalesce(firstDose.id, secondDose.id), thirdDose.id), coalesce(coalesce(firstDose.name, secondDose.name), thirdDose.name), coalesce(firstDose.total, 0), coalesce(secondDose.total, 0), coalesce(thirdDose.total, 0), coalesce(firstDose.total, 0) + coalesce(secondDose.total, 0) + coalesce(thirdDose.total, 0) \
     \from firstDose full outer join secondDose on firstDose.id = secondDose.id full outer join thirdDose on firstDose.id = thirdDose.id \
     \limit greatest(0, ?) offset greatest(0, ?)"
 
