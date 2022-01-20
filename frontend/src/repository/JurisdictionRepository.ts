@@ -15,6 +15,18 @@ export default class JurisdictionRepository {
         return result;
     }
 
+
+    public async listDose(pagination: Pagination, filter: Filter): Promise<any[]> {
+        const options: RequestInit = {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
+        }
+
+        const result: any[] = (await (await fetch(`${JurisdictionRepository.API_URL}/dose?limit=${pagination.limit}&offset=${pagination.offset}`, options)).json()).jurisdictions
+
+        return result.sort((a, b) => b.totalDose - a.totalDose);
+    }
+
     public async post(name: string) : Promise<any[]> {
         const options: RequestInit = {
             method: "POST",

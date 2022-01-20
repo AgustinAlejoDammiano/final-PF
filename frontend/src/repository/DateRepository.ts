@@ -12,6 +12,6 @@ export default class DateRepository {
 
         const result: any[] = (await (await fetch(`${DateRepository.API_URL}?limit=${pagination.limit}&offset=${pagination.offset}`, options)).json()).dates
 
-        return result.sort((a,b) => b.date.localeCompare(a.date));
+        return result.sort((b,a) => b.date.localeCompare(a.date));
     }
 }
