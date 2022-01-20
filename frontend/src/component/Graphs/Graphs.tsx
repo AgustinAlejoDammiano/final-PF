@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 // import useStyles from "./styles";
-import { AreaChart, Area, XAxis, YAxis, Tooltip, LabelList, CartesianGrid, BarChart, Bar, Legend } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid, BarChart, Bar, Legend } from 'recharts';
 import Filter from "../../model/Filter/Filter";
 import Pagination from "../../model/Pagination/Pagination";
 import DateRepository from "../../repository/DateRepository";
