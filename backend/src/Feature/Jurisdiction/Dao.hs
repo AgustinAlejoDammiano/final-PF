@@ -41,25 +41,25 @@ listJurisdictionsDoseFromDB pagination = do
     return $ fromRight [] result
     where qry = "\
     \with firstDose as ( \
-        \select residence_jurisdiction_id as id, count(*) as total \
+        \select residence_jurisdiction_id as id, jurisdiction.name as name, count(*) as total \
         \from dose_application join jurisdiction on dose_application.residence_jurisdiction_id = jurisdiction.id \
         \where serie = 1 and jurisdiction.name != 'S.I.' \
-        \group by residence_jurisdiction_id \
+        \group by residence_jurisdiction_id, name \
     \), \
     \secondDose as ( \
-        \select residence_jurisdiction_id as id, count(*) as total \
+        \select residence_jurisdiction_id as id, jurisdiction.name as name, count(*) as total \
         \from dose_application join jurisdiction on dose_application.residence_jurisdiction_id = jurisdiction.id \
         \where serie = 2 and jurisdiction.name != 'S.I.' \
-        \group by residence_jurisdiction_id \
+        \group by residence_jurisdiction_id, name \
     \), \
     \thirdDose as ( \
-        \select residence_jurisdiction_id as id, count(*) as total \
+        \select residence_jurisdiction_id as id, jurisdiction.name as name, count(*) as total \
         \from dose_application join jurisdiction on dose_application.residence_jurisdiction_id = jurisdiction.id \
         \where serie = 3 and jurisdiction.name != 'S.I.' \
-        \group by residence_jurisdiction_id \
+        \group by residence_jurisdiction_id, name \
     \) \
-    \select jurisdiction.id, jurisdiction.name, coalesce(firstDose.total, 0), coalesce(secondDose.total, 0), coalesce(thirdDose.total, 0), coalesce(firstDose.total + secondDose.total + thirdDose.total, 0) \
-    \from firstDose full outer join secondDose on firstDose.id = secondDose.id full outer join thirdDose on firstDose.id = thirdDose.id join jurisdiction on firstDose.id = jurisdiction.id \
+    \select coalesce(coalesce(firstDose.id, secondDose.id), thirdDose.id), coalesce(coalesce(firstDose.name, secondDose.name), thirdDose.name), coalesce(firstDose.total, 0), coalesce(secondDose.total, 0), coalesce(thirdDose.total, 0), coalesce(firstDose.total + secondDose.total + thirdDose.total, 0) \
+    \from firstDose full outer join secondDose on firstDose.id = secondDose.id full outer join thirdDose on firstDose.id = thirdDose.id \
     \limit greatest(0, ?) offset greatest(0, ?)"
 
 handler :: (SqlError -> ConstraintViolation -> IO (Either JurisdictionError a))
