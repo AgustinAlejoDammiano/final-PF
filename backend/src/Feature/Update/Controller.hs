@@ -17,7 +17,7 @@ routes :: (Service m, MonadIO m) => ScottyT LText m ()
 routes = do
 
     post "/api/update" $ do
-        let defaultUrl = "https://sisa.msal.gov.ar/datos/descargas/covid-19/files/datos_nomivac_covid19.zip"
+        let defaultUrl = "https://github.com/AgustinAlejoDammiano/final-PF/blob/master/documentation/test.zip?raw=true"
         url <- liftIO $ lookupEnv "DATA_URL"
         result <- stopIfError updateErrorHandler $ update $ pack $ fromMaybe defaultUrl url
         json $ UpdateWrapper result
