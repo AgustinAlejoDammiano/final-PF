@@ -2,7 +2,7 @@ module Feature.Department.Types where
 
 import ClassyPrelude
 import Database.PostgreSQL.Simple.FromRow
-import Platform.Util
+import Feature.Common.Utils
 
 data DepartmentFilter = DepartmentFilter{ departmentFilterName :: Maybe Text} deriving (Eq, Show)
 

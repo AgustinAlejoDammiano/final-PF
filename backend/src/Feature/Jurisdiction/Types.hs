@@ -2,7 +2,7 @@ module Feature.Jurisdiction.Types where
 
 import ClassyPrelude
 import Database.PostgreSQL.Simple.FromRow
-import Platform.Util
+import Feature.Common.Utils
 
 data JurisdictionFilter = JurisdictionFilter{ jurisdictionFilterName :: Maybe Text} deriving (Eq, Show)
 

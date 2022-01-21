@@ -1,7 +1,7 @@
 module Spec.Types where
 
 import ClassyPrelude
-import Platform.Util
+import Feature.Common.Utils
 import Control.Monad.Except
 import Feature.Common.Types
 

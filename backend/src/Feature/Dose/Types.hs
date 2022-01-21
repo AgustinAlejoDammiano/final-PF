@@ -4,7 +4,7 @@ import ClassyPrelude
 import Database.PostgreSQL.Simple.FromRow
 import Database.PostgreSQL.Simple.ToRow
 import Database.PostgreSQL.Simple.ToField
-import Platform.Util
+import Feature.Common.Utils
 
 data DoseFilter = DoseFilter{ doseFilterId :: Maybe Integer, doseFilterSex :: Maybe Text} deriving (Eq, Show)
 

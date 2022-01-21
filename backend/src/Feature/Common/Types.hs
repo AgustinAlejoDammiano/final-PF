@@ -2,7 +2,7 @@ module Feature.Common.Types where
 
 import ClassyPrelude
 
-import Platform.Util
+import Feature.Common.Utils
 
 data Pagination = Pagination{ paginationLimit :: Int, paginationOffset :: Int} deriving (Eq, Show)
 

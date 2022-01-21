@@ -2,7 +2,7 @@ module Feature.Vaccine.Types where
 
 import ClassyPrelude
 import Database.PostgreSQL.Simple.FromRow
-import Platform.Util
+import Feature.Common.Utils
 
 data VaccineFilter = VaccineFilter{ vaccineFilterName :: Maybe Text} deriving (Eq, Show)
 

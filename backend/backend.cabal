@@ -57,7 +57,6 @@ library
       Lib
       Platform.Controller
       Platform.Database
-      Platform.Util
   other-modules:
       Paths_backend
   hs-source-dirs:

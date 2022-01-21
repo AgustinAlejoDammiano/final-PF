@@ -1,7 +1,7 @@
 module Feature.Update.Types where
 
 import ClassyPrelude
-import Platform.Util
+import Feature.Common.Utils
 import Data.Time.LocalTime
 import Database.PostgreSQL.Simple.FromRow
 

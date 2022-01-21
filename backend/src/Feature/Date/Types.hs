@@ -2,7 +2,7 @@ module Feature.Date.Types where
 
 import ClassyPrelude
 import Database.PostgreSQL.Simple.FromRow
-import Platform.Util
+import Feature.Common.Utils
 
 data DateFilter = DateFilter{ dateFilterName :: Maybe Text} deriving (Eq, Show)
 
