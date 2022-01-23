@@ -22,12 +22,10 @@ getDepartment name = runExceptT $ do
         _ -> throwError $ DepartmentNameNotFound name
 
 createDepartment :: (Dao m) => CreateDepartment -> m(Either DepartmentError Department)
-createDepartment param = do 
-    result <- createDepartmentFromDB param
-    department <- case result of
-        Left e -> return $ Left e
-        Right _ -> getDepartment $ createDepartmentName param
-    return department
+createDepartment param = runExceptT $ do 
+    _ <- ExceptT $ createDepartmentFromDB param
+    ExceptT $ getDepartment $ createDepartmentName param
+    
 
 deleteDepartment :: (Dao m) => Integer -> m (Either DepartmentError Bool)
 deleteDepartment = deleteDepartmentFromDB

@@ -23,12 +23,9 @@ getJurisdiction name = runExceptT $ do
         _ -> throwError $ JurisdictionNameNotFound name
 
 createJurisdiction :: (Dao m) => CreateJurisdiction -> m(Either JurisdictionError Jurisdiction)
-createJurisdiction param = do 
-    result <- createJurisdictionFromDB param
-    jurisdiction <- case result of
-        Left e -> return $ Left e
-        Right _ -> getJurisdiction $ createJurisdictionName param
-    return jurisdiction
+createJurisdiction param = runExceptT $ do 
+    _ <- ExceptT $ createJurisdictionFromDB param
+    ExceptT $ getJurisdiction $ createJurisdictionName param
 
 deleteJurisdiction :: (Dao m) => Integer -> m (Either JurisdictionError Bool)
 deleteJurisdiction = deleteJurisdictionFromDB

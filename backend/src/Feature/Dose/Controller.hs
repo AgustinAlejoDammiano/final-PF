@@ -45,9 +45,6 @@ routes = do
 
 doseErrorHandler :: (ScottyError e, Monad m) => DoseError -> ActionT e m ()
 doseErrorHandler err = case err of
-    DoseNotFound _ -> do
-        status status404
-        json err
     DoseNameNotFound _ -> do
         status status404
         json err

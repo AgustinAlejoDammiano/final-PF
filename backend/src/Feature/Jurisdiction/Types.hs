@@ -11,7 +11,7 @@ data JurisdictionDose = JurisdictionDose{ jurisdictionDoseId :: Integer, jurisdi
     jurisdictionDoseFirstDose :: Integer, jurisdictionDoseSecondDose :: Integer, jurisdictionDoseThirdDose :: Integer,
     jurisdictionDoseTotalDose :: Integer }
 data CreateJurisdiction = CreateJurisdiction{ createJurisdictionId :: Integer, createJurisdictionName :: Text} deriving (Eq, Show)
-data JurisdictionError = JurisdictionNotFound Integer | JurisdictionNameNotFound Text | JurisdictionAlreadyExist Text | UnknownError
+data JurisdictionError = JurisdictionNameNotFound Text | JurisdictionAlreadyExist Text | UnknownError
 
 newtype JurisdictionWrapper a = JurisdictionWrapper { jurisdictionWrapperJurisdiction :: a } deriving (Eq, Show)
 data JurisdictionsWrapper a = JurisdictionsWrapper { jurisdictionsWrapperJurisdictions :: [a], jurisdictionsWrapperCount :: Int } deriving (Eq, Show)

@@ -22,12 +22,9 @@ getDose i = runExceptT $ do
         _ -> throwError $ DoseNameNotFound $ pack $ show i
 
 createDose :: (Dao m) => CreateDose -> m(Either DoseError Dose)
-createDose param = do 
-    result <- createDoseFromDB param
-    dose <- case result of
-        Left e -> return $ Left e
-        Right i -> getDose i
-    return dose
+createDose param = runExceptT $ do 
+    i <- ExceptT $ createDoseFromDB param
+    ExceptT $ getDose i
 
 deleteDose :: (Dao m) => Integer -> m (Either DoseError Bool)
 deleteDose = deleteDoseFromDB

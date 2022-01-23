@@ -43,9 +43,6 @@ routes = do
 
 departmentErrorHandler :: (ScottyError e, Monad m) => DepartmentError -> ActionT e m ()
 departmentErrorHandler err = case err of
-    DepartmentNotFound _ -> do
-        status status404
-        json err
     DepartmentNameNotFound _ -> do
         status status404
         json err

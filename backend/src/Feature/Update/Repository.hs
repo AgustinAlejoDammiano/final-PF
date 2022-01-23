@@ -17,7 +17,8 @@ import System.Directory
 import qualified Data.ByteString.Lazy as BL
 import Data.Csv.Streaming
 import Data.Csv (FromNamedRecord, parseNamedRecord, (.:))
-import Data.Foldable as F
+import Data.Traversable as T
+import Control.Monad.Except
 
 data Row = Row{ rowJurisdictionResidence :: Text, rowJurisdictionResidenceId :: Text, 
                 rowDepartmentResidence :: Text, rowDepartmentResidenceId :: Text, 
@@ -45,26 +46,25 @@ loadData url cj cd cv cdo = do
     where fileZip = "tmpfile.zip"
 
 readCsv :: (MonadIO m) => (CreateJurisdiction -> m(Either JurisdictionError Jurisdiction)) -> (CreateDepartment -> m(Either DepartmentError Department)) -> (CreateVaccine -> m(Either VaccineError Vaccine)) -> (CreateDose -> m(Either DoseError Dose)) -> m(Either UpdateError Update)
-readCsv cj cd cv cdo = do
-    f <- liftIO $ BL.readFile fileCsv
+readCsv cj cd cv cdo = runExceptT $ do
+    f <- withExceptT (\_ -> UnknownError) $ liftIO $ BL.readFile fileCsv
     case decodeByName f of
-        Left _ -> return $ Left $ UnknownError
+        Left _ -> throwError UnknownError
         Right (_, xs) -> do
-            F.for_ xs $ handleRow cj cd cv cdo
+            _ <- T.forM xs $ handleRow cj cd cv cdo
             liftIO $ removeFile fileCsv
-            return $ Right $ Update True
+            return $ Update True
     where fileCsv = "datos_nomivac_covid19.csv"
 
-handleRow :: (MonadIO m) => (CreateJurisdiction -> m(Either JurisdictionError Jurisdiction)) -> (CreateDepartment -> m(Either DepartmentError Department)) -> (CreateVaccine -> m(Either VaccineError Vaccine)) -> (CreateDose -> m(Either DoseError Dose)) -> Row -> m Bool
+handleRow :: (MonadIO m) => (CreateJurisdiction -> m(Either JurisdictionError Jurisdiction)) -> (CreateDepartment -> m(Either DepartmentError Department)) -> (CreateVaccine -> m(Either VaccineError Vaccine)) -> (CreateDose -> m(Either DoseError Dose)) -> Row -> ExceptT UpdateError m ()
 handleRow cj cd cv cdo r = do
-    _ <- cj $ CreateJurisdiction (parseIntger $ rowJurisdictionResidenceId r) (rowJurisdictionResidence r)
-    _ <- cd $ CreateDepartment (parseIntger $ rowDepartmentResidenceId r) (rowDepartmentResidence r)    
-    _ <- cj $ CreateJurisdiction (parseIntger $ rowJurisdictionApplicationId r) (rowJurisdictionApplication r)
-    _ <- cd $ CreateDepartment (parseIntger $ rowDepartmentApplicationId r) (rowDepartmentApplication r)
-    ev <- cv $ CreateVaccine (rowVaccine r)
-    _ <- case ev of
-        Right v -> cdo $ CreateDose (rowSex r) (rowAge r) (rowCondition r) (rowLot r) (parseDateOrThrow $ rowDate r) (rowSerie r) (vaccineId v)
-            (parseIntger $ rowJurisdictionResidenceId r) (parseIntger $ rowDepartmentResidenceId r) (parseIntger $ rowJurisdictionApplicationId r)
-            (parseIntger $ rowDepartmentApplicationId r)
-        Left _ -> error "Error update"
-    return True
+    _ <- customWithExceptT $ cj $ CreateJurisdiction (parseIntger $ rowJurisdictionResidenceId r) (rowJurisdictionResidence r)
+    _ <- customWithExceptT $ cd $ CreateDepartment (parseIntger $ rowDepartmentResidenceId r) (rowDepartmentResidence r)    
+    _ <- customWithExceptT $ cj $ CreateJurisdiction (parseIntger $ rowJurisdictionApplicationId r) (rowJurisdictionApplication r)
+    _ <- customWithExceptT $ cd $ CreateDepartment (parseIntger $ rowDepartmentApplicationId r) (rowDepartmentApplication r)
+    v <- customWithExceptT $ cv $ CreateVaccine (rowVaccine r)
+    _ <- customWithExceptT $ cdo $ CreateDose (rowSex r) (rowAge r) (rowCondition r) (rowLot r) (parseDateOrThrow $ rowDate r) (rowSerie r) (vaccineId v)
+        (parseIntger $ rowJurisdictionResidenceId r) (parseIntger $ rowDepartmentResidenceId r) (parseIntger $ rowJurisdictionApplicationId r)
+        (parseIntger $ rowDepartmentApplicationId r)
+    return ()
+    where customWithExceptT a = withExceptT (\_ -> UnknownError) $ ExceptT a

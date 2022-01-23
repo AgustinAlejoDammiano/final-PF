@@ -8,7 +8,7 @@ data VaccineFilter = VaccineFilter{ vaccineFilterName :: Maybe Text} deriving (E
 
 data Vaccine = Vaccine{ vaccineId :: Integer, vaccineName :: Text} deriving (Eq, Show)
 data CreateVaccine = CreateVaccine{ createVaccineName :: Text} deriving (Eq, Show)
-data VaccineError = VaccineNotFound Integer | VaccineNameNotFound Text | VaccineAlreadyExist Text | UnknownError
+data VaccineError = VaccineNameNotFound Text | VaccineAlreadyExist Text | UnknownError
 
 newtype VaccineWrapper a = VaccineWrapper { vaccineWrapperVaccine :: a } deriving (Eq, Show)
 data VaccinesWrapper a = VaccinesWrapper { vaccinesWrapperVaccines :: [a], vaccinesWrapperCount :: Int } deriving (Eq, Show)

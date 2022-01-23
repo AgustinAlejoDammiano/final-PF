@@ -49,9 +49,6 @@ routes = do
 
 jurisdictionErrorHandler :: (ScottyError e, Monad m) => JurisdictionError -> ActionT e m ()
 jurisdictionErrorHandler err = case err of
-    JurisdictionNotFound _ -> do
-        status status404
-        json err
     JurisdictionNameNotFound _ -> do
         status status404
         json err

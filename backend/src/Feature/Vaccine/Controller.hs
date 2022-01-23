@@ -43,9 +43,6 @@ routes = do
 
 vaccineErrorHandler :: (ScottyError e, Monad m) => VaccineError -> ActionT e m ()
 vaccineErrorHandler err = case err of
-    VaccineNotFound _ -> do
-        status status404
-        json err
     VaccineNameNotFound _ -> do
         status status404
         json err

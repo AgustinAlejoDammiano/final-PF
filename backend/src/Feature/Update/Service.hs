@@ -8,6 +8,7 @@ import Feature.Department.Types hiding (UnknownError)
 import Feature.Vaccine.Types hiding (UnknownError)
 import Feature.Dose.Types hiding (UnknownError)
 import Data.Time.LocalTime
+import Control.Monad.Except
 
 class Monad m => JurisdictionService m where
     createJurisdiction :: CreateJurisdiction -> m(Either JurisdictionError Jurisdiction)
@@ -33,34 +34,24 @@ class Monad m => UpdateRepository m where
     loadData :: Text -> (CreateJurisdiction -> m(Either JurisdictionError Jurisdiction)) -> (CreateDepartment -> m(Either DepartmentError Department)) -> (CreateVaccine -> m(Either VaccineError Vaccine)) -> (CreateDose -> m(Either DoseError Dose)) -> m(Either UpdateError Update)
 
 update :: (UpdateRepository m, JurisdictionService m, DepartmentService m, VaccineService m, DoseService m, UpdateDao m,  MonadUnliftIO m) => Text -> m(Either UpdateError Update)
-update url = do
+update url = runExceptT $ do
     t <- liftIO getZonedTime
-    deleteResult <- deleteOldData
-    result <- case deleteResult of 
-        Right _ -> updateData url t
-        Left e -> return $ Left e
-    return result
+    _ <- ExceptT $ deleteOldData
+    ExceptT $ updateData url t
 
 listUpdates :: (UpdateDao m) => Pagination -> m [UpdateDate]
 listUpdates = listUpdatesFromDB
 
 deleteOldData :: (JurisdictionService m, DepartmentService m, VaccineService m, DoseService m) => m (Either UpdateError ())
-deleteOldData = do 
-    jurisdiction <- deleteJurisdictions
-    department <- deleteDepartments
-    vaccine <- deleteVaccines
-    dose <- deleteDoses
-    case lefts [mapEither jurisdiction, mapEither department, mapEither vaccine, mapEither dose] of
-        [] -> return $ Right ()
-        _ -> return $ Left UnknownError
+deleteOldData = runExceptT $ do 
+    _ <- customWithExceptT deleteJurisdictions
+    _ <- customWithExceptT deleteDepartments
+    _ <- customWithExceptT deleteVaccines
+    _ <- customWithExceptT deleteDoses
+    return ()
+    where customWithExceptT a = withExceptT (\_ -> UnknownError) $ ExceptT a
 
 updateData :: (UpdateRepository m, JurisdictionService m, DepartmentService m, VaccineService m, DoseService m, UpdateDao m) => Text -> ZonedTime -> m(Either UpdateError Update)
-updateData url t = do
-    result <- loadData url createJurisdiction createDepartment createVaccine createDose
-    result' <- case result of 
-        Right _ -> createUpdateFromDB t
-        Left e -> return $ Left e
-    return result'
-
-mapEither :: Either a b -> Either Bool Bool
-mapEither e = first (\_ -> True) $ second (\_ -> True) e
+updateData url t = runExceptT $ do
+    _ <- ExceptT $ loadData url createJurisdiction createDepartment createVaccine createDose
+    ExceptT $ createUpdateFromDB t

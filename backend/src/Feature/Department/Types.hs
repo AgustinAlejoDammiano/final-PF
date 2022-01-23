@@ -8,7 +8,7 @@ data DepartmentFilter = DepartmentFilter{ departmentFilterName :: Maybe Text} de
 
 data Department = Department{ departmentId :: Integer, departmentName :: Text} deriving (Eq, Show)
 data CreateDepartment = CreateDepartment{ createDepartmentId :: Integer, createDepartmentName :: Text} deriving (Eq, Show)
-data DepartmentError = DepartmentNotFound Integer | DepartmentNameNotFound Text | DepartmentAlreadyExist Text | UnknownError
+data DepartmentError = DepartmentNameNotFound Text | DepartmentAlreadyExist Text | UnknownError
 
 newtype DepartmentWrapper a = DepartmentWrapper { departmentWrapperDepartment :: a } deriving (Eq, Show)
 data DepartmentsWrapper a = DepartmentsWrapper { departmentsWrapperDepartments :: [a], departmentsWrapperCount :: Int } deriving (Eq, Show)
