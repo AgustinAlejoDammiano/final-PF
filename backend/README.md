@@ -8,9 +8,13 @@ Api make in Haskell that provides the information of vaccination in Argentina.
 
 Set these enviroment variable, the data between parenthesis is the default:
 
+```
 DATABASE_URL (postgresql://postgres:postgres@localhost:5432/covid)
+
 PORT         (3000)
+
 DATA_URL     (https://github.com/AgustinAlejoDammiano/final-PF/blob/master/documentation/test.zip?raw=true)
+```
 
 Example on how to set them:
 
