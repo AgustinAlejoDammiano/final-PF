@@ -71,7 +71,7 @@ parseDoseFilter :: (ScottyError e, Monad m) => ActionT e m DoseFilter
 parseDoseFilter = DoseFilter <$> mayParamInteger "id" <*> mayParam "sex"
 
 createDoseForm :: (Monad m) => DF.Form [Text] m CreateDose
-createDoseForm = CreateDose <$> "sex" .: DF.check ["Must be M or F"] (\s -> s == "M" || s == "S") (DF.text Nothing) 
+createDoseForm = CreateDose <$> "sex" .: DF.check ["Must be M or F"] (\s -> s == "M" || s == "F") (DF.text Nothing) 
     <*> "age" .: exists(DF.text Nothing)  
     <*> "condition" .: exists(DF.text Nothing)
     <*> "lot" .: exists (DF.text Nothing) 
