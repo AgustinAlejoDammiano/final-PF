@@ -16,7 +16,7 @@ data CreateDose = CreateDose{ createDoseSex :: Text, createDoseAge :: Text, crea
     createDoseLot :: Text, createDoseDate :: Day, createDoseSerie :: Integer, createDoseVaccineId :: Integer, 
     createDoseResidenceJurisdictionId :: Integer, createDoseResidenceDepartmentId :: Integer, 
     createDoseApplicationJurisdictionId :: Integer, createDoseApplicationDepartmentId :: Integer} deriving (Eq, Show)
-data DoseError = DoseNameNotFound Text | DoseAlreadyExist Text | UnknownError
+data DoseError = DoseNameNotFound Text | DoseAlreadyExist Text | DoseWrongParameter Text | UnknownError
 
 newtype DoseWrapper a = DoseWrapper { doseWrapperDose :: a } deriving (Eq, Show)
 data DosesWrapper a = DosesWrapper { dosesWrapperDoses :: [a], dosesWrapperCount :: Int } deriving (Eq, Show)

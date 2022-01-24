@@ -45,6 +45,9 @@ routes = do
 
 doseErrorHandler :: (ScottyError e, Monad m) => DoseError -> ActionT e m ()
 doseErrorHandler err = case err of
+    DoseWrongParameter _ -> do
+        status status400
+        json err
     DoseNameNotFound _ -> do
         status status404
         json err
@@ -68,16 +71,18 @@ parseDoseFilter :: (ScottyError e, Monad m) => ActionT e m DoseFilter
 parseDoseFilter = DoseFilter <$> mayParamInteger "id" <*> mayParam "sex"
 
 createDoseForm :: (Monad m) => DF.Form [Text] m CreateDose
-createDoseForm = CreateDose <$> "sex" .: DF.text Nothing <*> "age" .: DF.text Nothing  <*> "condition" .: DF.text Nothing
-    <*> "lot" .: DF.text Nothing <*> "date" .: validate validateDate (DF.text Nothing) <*> "serie" .: DF.stringRead ["Not a number"] (Just 0)
-    <*> "vaccineId" .: DF.stringRead ["Not a number"] (Just 0) <*> "residenceJurisdictionId" .: DF.stringRead ["Not a number"] (Just 0)
-    <*> "residenceDepartmentId" .: DF.stringRead ["Not a number"] (Just 0) <*> "applicationJurisdictionId" .: DF.stringRead ["Not a number"] (Just 0)
-    <*> "applicationDepartmentId" .: DF.stringRead ["Not a number"] (Just 0)
+createDoseForm = CreateDose <$> "sex" .: DF.check ["Must be M or F"] (\s -> s == "M" || s == "S") (DF.text Nothing) 
+    <*> "age" .: exists(DF.text Nothing)  
+    <*> "condition" .: exists(DF.text Nothing)
+    <*> "lot" .: exists (DF.text Nothing) 
+    <*> "date" .: validate validateDate (DF.text Nothing) 
+    <*> "serie" .: DF.stringRead ["Not a number"] (Just 1)
+    <*> "vaccineId" .: DF.stringRead ["Not a number"] (Nothing) 
+    <*> "residenceJurisdictionId" .: DF.stringRead ["Not a number"] (Nothing)
+    <*> "residenceDepartmentId" .: DF.stringRead ["Not a number"] (Nothing) 
+    <*> "applicationJurisdictionId" .: DF.stringRead ["Not a number"] (Nothing)
+    <*> "applicationDepartmentId" .: DF.stringRead ["Not a number"] (Nothing)
+    where exists x = DF.check ["Can't be empty"] (not . null) x
 
 validateDate :: Text -> Result [Text] Day
 validateDate t = maybe (Error ["Date must have the yyyy-mm-dd format"]) (\s -> Success s) (parseDate t)
-
--- createDoseSex :: Text, createDoseAge :: Text, createDoseCondition :: Text, 
---     createDoseLot :: Text, createDoseDate :: Day, createDoseSerie :: Integer, createDoseVaccineId :: Integer, 
---     createDoseResidenceJurisdictionId :: Integer, createDoseResidenceDepartmentId :: Integer, 
---     createDoseApplicationJurisdictionId :: Integer, createDoseApplicationDepartmentId :: Integer

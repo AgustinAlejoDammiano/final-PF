@@ -42,4 +42,5 @@ deleteDosesFromDB = do
 
 handler :: (SqlError -> ConstraintViolation -> IO (Either DoseError a))
 handler _ (UniqueViolation x) = return $ Left $ DoseAlreadyExist $ decodeUtf8 x
+handler _ (ForeignKeyViolation _ _) = return $ Left $ DoseWrongParameter $ pack "vaccine, department or jurisdiction does not exist"
 handler _ _ = return $ Left UnknownError

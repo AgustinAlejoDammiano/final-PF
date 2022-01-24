@@ -67,4 +67,4 @@ parseJurisdictionFilter = JurisdictionFilter <$> mayParam "name"
 
 createJurisdictionForm :: (Monad m) => DF.Form [Text] m CreateJurisdiction
 createJurisdictionForm = CreateJurisdiction <$> "id" .: DF.stringRead ["Not a number"] (Just $ -1)
-                                            <*> "name" .: DF.text Nothing
+                                            <*> "name" .: DF.check ["Can't be empty"] (not . null) (DF.text Nothing)

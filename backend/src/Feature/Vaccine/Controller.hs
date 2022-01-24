@@ -60,4 +60,4 @@ parseVaccineFilter :: (ScottyError e, Monad m) => ActionT e m VaccineFilter
 parseVaccineFilter = VaccineFilter <$> mayParam "name"
 
 createVaccineForm :: (Monad m) => DF.Form [Text] m CreateVaccine
-createVaccineForm = CreateVaccine <$> "name" .: DF.text Nothing
+createVaccineForm = CreateVaccine <$> "name" .: DF.check ["Can't be empty"] (not . null) (DF.text Nothing)
