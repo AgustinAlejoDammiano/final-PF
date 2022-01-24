@@ -58,7 +58,6 @@ doseErrorHandler err = case err of
         status status500
         json err
 
--- TODO move to utils
 mayParam :: (ScottyError e, Monad m) => LText -> ActionT e m (Maybe Text)
 mayParam name = (Just <$> param name) `rescue` const (return Nothing)
 

@@ -5,7 +5,6 @@ import Data.Text.Read (signed, decimal)
 import Data.Aeson.TH
 import Language.Haskell.TH.Syntax
 
--- TODO check
 parseInt :: Text -> Int 
 parseInt = either (error . show) fst . signed decimal 
 

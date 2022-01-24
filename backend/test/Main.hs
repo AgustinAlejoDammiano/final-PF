@@ -38,7 +38,6 @@ execPGQuery :: [Query] -> IO ()
 execPGQuery qrys =
     bracket acquire release execQuery
     where
-        --   TODO env varible for user and password
         acquire = connectPostgreSQL "postgresql://postgres:postgres@localhost"
         release = close
         execQuery conn = forM_ qrys (void . execute_ conn)
