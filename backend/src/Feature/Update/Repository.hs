@@ -59,12 +59,12 @@ readCsv cj cd cv cdo = runExceptT $ do
 handleRow :: (MonadIO m) => (CreateJurisdiction -> m(Either JurisdictionError Jurisdiction)) -> (CreateDepartment -> m(Either DepartmentError Department)) -> (CreateVaccine -> m(Either VaccineError Vaccine)) -> (CreateDose -> m(Either DoseError Dose)) -> Row -> ExceptT UpdateError m ()
 handleRow cj cd cv cdo r = do
     _ <- customWithExceptT $ cj $ CreateJurisdiction (parseIntger $ rowJurisdictionResidenceId r) (rowJurisdictionResidence r)
-    _ <- customWithExceptT $ cd $ CreateDepartment (parseIntger $ rowDepartmentResidenceId r) (rowDepartmentResidence r)    
+    dr <- customWithExceptT $ cd $ CreateDepartment (-1) (rowDepartmentResidence r)    
     _ <- customWithExceptT $ cj $ CreateJurisdiction (parseIntger $ rowJurisdictionApplicationId r) (rowJurisdictionApplication r)
-    _ <- customWithExceptT $ cd $ CreateDepartment (parseIntger $ rowDepartmentApplicationId r) (rowDepartmentApplication r)
+    da <- customWithExceptT $ cd $ CreateDepartment (-1) (rowDepartmentApplication r)
     v <- customWithExceptT $ cv $ CreateVaccine (rowVaccine r)
     _ <- customWithExceptT $ cdo $ CreateDose (rowSex r) (rowAge r) (rowCondition r) (rowLot r) (parseDateOrThrow $ rowDate r) (rowSerie r) (vaccineId v)
-        (parseIntger $ rowJurisdictionResidenceId r) (parseIntger $ rowDepartmentResidenceId r) (parseIntger $ rowJurisdictionApplicationId r)
-        (parseIntger $ rowDepartmentApplicationId r)
+        (parseIntger $ rowJurisdictionResidenceId r) (departmentId dr) (parseIntger $ rowJurisdictionApplicationId r)
+        (departmentId da)
     return ()
     where customWithExceptT a = withExceptT (\_ -> UnknownError) $ ExceptT a
