@@ -23,8 +23,19 @@ getJurisdiction name = runExceptT $ do
         _ -> throwError $ JurisdictionNameNotFound name
 
 createJurisdiction :: (Dao m) => CreateJurisdiction -> m(Either JurisdictionError Jurisdiction)
-createJurisdiction param = runExceptT $ do 
-    _ <- ExceptT $ createJurisdictionFromDB param
+createJurisdiction =  createJurisdictionHandle handler
+    where handler x = x
+
+createJurisdictionOrFind :: (Dao m) => CreateJurisdiction -> m(Either JurisdictionError Jurisdiction)
+createJurisdictionOrFind = createJurisdictionHandle $ liftM handler
+    where 
+        handler (Left (JurisdictionAlreadyExist _)) = Right True
+        handler x = x
+
+createJurisdictionHandle :: (Dao m) => (m(Either JurisdictionError Bool) -> m(Either JurisdictionError Bool)) -> CreateJurisdiction
+    -> m(Either JurisdictionError Jurisdiction)
+createJurisdictionHandle handler param = runExceptT $ do 
+    _ <- mapExceptT handler $ ExceptT $ createJurisdictionFromDB param
     ExceptT $ getJurisdiction $ createJurisdictionName param
 
 deleteJurisdiction :: (Dao m) => Integer -> m (Either JurisdictionError Bool)

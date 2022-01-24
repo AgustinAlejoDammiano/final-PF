@@ -22,18 +22,20 @@ getVaccine name = runExceptT $ do
         _ -> throwError $ VaccineNameNotFound name
 
 createVaccine :: (Dao m) => CreateVaccine -> m(Either VaccineError Vaccine)
-createVaccine param = createVaccineHandle param (\e -> return $ Left e)
+createVaccine =  createVaccineHandle handler
+    where handler x = x
 
 createVaccineOrFind :: (Dao m) => CreateVaccine -> m(Either VaccineError Vaccine)
-createVaccineOrFind param = createVaccineHandle param (\_ -> getVaccine $ createVaccineName param)
+createVaccineOrFind = createVaccineHandle $ liftM handler
+    where 
+        handler (Left (VaccineAlreadyExist _)) = Right True
+        handler x = x
 
-createVaccineHandle :: (Dao m) => CreateVaccine -> (VaccineError -> m(Either VaccineError Vaccine)) -> m(Either VaccineError Vaccine)
-createVaccineHandle param handler = do
-    result <- createVaccineFromDB param
-    vaccine <- case result of
-        Left e -> handler e
-        Right _ -> getVaccine $ createVaccineName param
-    return vaccine
+createVaccineHandle :: (Dao m) => (m(Either VaccineError Bool) -> m(Either VaccineError Bool)) -> CreateVaccine
+    -> m(Either VaccineError Vaccine)
+createVaccineHandle handler param = runExceptT $ do 
+    _ <- mapExceptT handler $ ExceptT $ createVaccineFromDB param
+    ExceptT $ getVaccine $ createVaccineName param
 
 deleteVaccine :: (Dao m) => Integer -> m (Either VaccineError Bool)
 deleteVaccine = deleteVaccineFromDB

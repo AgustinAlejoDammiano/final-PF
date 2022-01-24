@@ -22,11 +22,21 @@ getDepartment name = runExceptT $ do
         _ -> throwError $ DepartmentNameNotFound name
 
 createDepartment :: (Dao m) => CreateDepartment -> m(Either DepartmentError Department)
-createDepartment param = runExceptT $ do 
-    _ <- ExceptT $ createDepartmentFromDB param
+createDepartment =  createDepartmentHandle handler
+    where handler x = x
+
+createDepartmentOrFind :: (Dao m) => CreateDepartment -> m(Either DepartmentError Department)
+createDepartmentOrFind = createDepartmentHandle $ liftM handler
+    where 
+        handler (Left (DepartmentAlreadyExist _)) = Right True
+        handler x = x
+
+createDepartmentHandle :: (Dao m) => (m(Either DepartmentError Bool) -> m(Either DepartmentError Bool)) -> CreateDepartment
+    -> m(Either DepartmentError Department)
+createDepartmentHandle handler param = runExceptT $ do 
+    _ <- mapExceptT handler $ ExceptT $ createDepartmentFromDB param
     ExceptT $ getDepartment $ createDepartmentName param
     
-
 deleteDepartment :: (Dao m) => Integer -> m (Either DepartmentError Bool)
 deleteDepartment = deleteDepartmentFromDB
 

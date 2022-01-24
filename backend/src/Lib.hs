@@ -61,11 +61,11 @@ instance UpdateController.Service AppT where
     listUpdates = UpdateService.listUpdates
 
 instance UpdateService.JurisdictionService AppT where
-    createJurisdiction = JurisdictionService.createJurisdiction
+    createJurisdiction = JurisdictionService.createJurisdictionOrFind
     deleteJurisdictions = JurisdictionService.deleteJurisdictions
 
 instance UpdateService.DepartmentService AppT where
-    createDepartment = DepartmentService.createDepartment
+    createDepartment = DepartmentService.createDepartmentOrFind
     deleteDepartments = DepartmentService.deleteDepartments
 
 instance UpdateService.VaccineService AppT where
